@@ -2,6 +2,7 @@ package com.utkarshbank.tests;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -85,7 +86,7 @@ public class BaseTest {
 		driver.manage().deleteAllCookies();
 		driver.get(siteUrl);
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 
 		System.err.println("Running on -->> " + browser + "  browser");
 
