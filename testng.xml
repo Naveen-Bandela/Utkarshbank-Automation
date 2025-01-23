@@ -10,7 +10,5 @@
 		<classes>
 			<class name="com.utkarshbank.tests.LoginTest" />
 		</classes>
-	</test> <!--
-	Test -->
-</suite> <!--
-Suite -->
+	</test> 
+</suite> 
