@@ -1,35 +1,39 @@
-name: Login Tests
+name: Selenium Tests
 
 on:
   workflow_dispatch:  # Allows manual triggering of the workflow
-  
+
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: false  # Disable submodule fetching
 
-      # Step 2: Set up Java environment
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'temurin'  # Specify the JDK distribution
 
-      # Step 3: Cache Maven dependencies
-      - name: Cache Maven dependencies
+      - name: Cache Maven packages
         uses: actions/cache@v3
         with:
-          path: ~/.m2
+          path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      # Step 4: Run Maven tests and generate Allure results
-      - name: Run tests with Maven
-        run: mvn clean test
+      - name: Install dependencies
+        run: mvn install --no-transfer-progress
 
-      # Step 5: Install Allure CLI
+      - name: Run Selenium Tests
+        run: mvn test
+
+      # Allure integration steps
       - name: Install Allure CLI
         run: |
           sudo apt-get update
@@ -39,11 +43,9 @@ jobs:
           sudo mv allure-2.21.0 /opt/allure
           sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
-      # Step 6: Generate Allure Report
       - name: Generate Allure Report
         run: allure generate target/allure-results --clean -o allure-report
 
-      # Step 7: Upload Allure Report as an artifact
       - name: Upload Allure Report
         uses: actions/upload-artifact@v3
         with:
