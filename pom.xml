@@ -25,6 +25,8 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<forkCount>0</forkCount>
+					<argLine>-Xmx2048m</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
